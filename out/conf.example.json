@@ -1,0 +1,5 @@
+{
+    "cert":"./sslCertificate/cert.crt",
+    "key": "./sslCertificate/cert.key",
+    "passphrase":""
+}

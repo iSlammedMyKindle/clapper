@@ -3,8 +3,10 @@
     Modified from tGem to include headers that the godot build needs in order to function
     Fixed a bug with url detection - search parameters were being picked up when they shouldn't have
 */
-import http from "http";
+import https from "https";
 import fs from "fs/promises";
+
+const servConf = JSON.parse(await fs.readFile('conf.json'));
 
 const mimeTypes = {
     'html': "text/html",
@@ -18,7 +20,7 @@ const mimeTypes = {
 }
 
 // Gonna be pretty simple; obtain the file just by reading the file name. If it doesn't exist, 404
-const webServer = http.createServer(async (req, res)=>{
+const webServer = https.createServer({cert: await fs.readFile(servConf.cert), key: await fs.readFile(servConf.key), passphrase: servConf.passphrase}, async (req, res)=>{
     // the url isn't a reliable source for grabbing the specific name when it comes to javaScript, so we're grabbing it from the header
     // Doesn't seem like we can guarantee it, so let's grab it if we can
     const urlSource = req.headers.referer || req.url;
@@ -54,7 +56,7 @@ const webServer = http.createServer(async (req, res)=>{
     res.write(resBuff);
     res.end();
 
-});
+},);
 
 function write404(res){
     res.statusCode = 404;
