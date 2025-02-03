@@ -1,5 +1,7 @@
 /* Made by iSlammedMyKindle in 2023!
-    The webserver responsible for loading the UI for displaying what's going on in twitch. It's also used to change the controller configuration in real time (or to kill it)
+    A clone of a clone of an I have no idea at this point beacuse this should be a module instead of something I copy across projects!
+    Modified from tGem to include headers that the godot build needs in order to function
+    Fixed a bug with url detection - search parameters were being picked up when they shouldn't have
 */
 import http from "http";
 import fs from "fs/promises";
@@ -19,8 +21,8 @@ const mimeTypes = {
 const webServer = http.createServer(async (req, res)=>{
     // the url isn't a reliable source for grabbing the specific name when it comes to javaScript, so we're grabbing it from the header
     // Doesn't seem like we can guarantee it, so let's grab it if we can
-    const urlSoruce = req.headers.referer || req.url;
-    var path = urlSoruce.substring(urlSoruce.lastIndexOf("/"));
+    const urlSource = req.headers.referer || req.url;
+    var path = urlSource.substring(urlSource.lastIndexOf("/"));
     var fileName = new URL('https://example.com'+req.url).pathname;
     
     // There was originally code here that would block ".." in the url, but it turns out `GET` commands in general sort themselves out and can't go past a certain point. So there's no point in blocking this if the server automatically has protection
