@@ -15,7 +15,7 @@ func _ready():
 		if target_ip != null:
 			JavaScriptBridge.get_interface('console').log('hi from godot!', target_ip, reward_title)
 			client = WebSocketPeer.new();
-			client.connect_to_url("ws://"+target_ip+":9001")
+			client.connect_to_url("wss://"+target_ip+":9001")
 
 func _process(_delta):
 	if client == null:
